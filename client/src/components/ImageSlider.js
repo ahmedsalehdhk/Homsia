@@ -12,7 +12,7 @@ export default function ImageSlider(props) {
       className="relative w-full"
       data-carousel="slide"
     >
-      <div className="relative h-96 md:h-96 overflow-hidden rounded-lg">
+      <div className="relative h-[60vh] md:h-[75vh] overflow-hidden rounded-lg bg-gray-100">
         {props.images &&
           props.images.map((image, index) => {
             return (
@@ -24,7 +24,7 @@ export default function ImageSlider(props) {
               >
                 <img
                   src={image}
-                  className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                  className="absolute inset-0 h-full w-full object-cover"
                   alt={`Slide ${index + 1}`}
                 />
               </div>
@@ -38,7 +38,7 @@ export default function ImageSlider(props) {
               key={index}
               type="button"
               className={`w-3 h-3 rounded-full ${
-                index === currentSlide ? "bg-black" : "bg-gray-300"
+                index === currentSlide ? "bg-white" : "bg-white/40"
               }`}
               aria-current={index === currentSlide}
               aria-label={`Slide ${index + 1}`}

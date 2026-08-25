@@ -1,10 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 html{
-    font-family: 'Lato', serif;
+    font-family: 'Nunito Sans', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     scroll-behavior: smooth;
+}
+
+.container-site {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+@media (min-width: 768px) {
+    .container-site { padding-left: 2.5rem; padding-right: 2.5rem; }
+}
+@media (min-width: 1024px) {
+    .container-site { padding-left: 4rem; padding-right: 4rem; }
 }

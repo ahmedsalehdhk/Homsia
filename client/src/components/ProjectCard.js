@@ -1,49 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaBed, FaShower, FaCar, FaRuler } from "react-icons/fa";
 
 export default function ProjectCard(props) {
+  const { data } = props;
 
   return (
-    <div className="project-card bg-white w-80 max-w-fit h-fit overflow-hidden">
-      <div className="image-container relative h-72 w-auto overflow-hidden flex justify-center items-center">
-        {
-          <img src={props.data.images[0]} alt="" className="min-h-full min-w-[160%] hover:scale-105 transition-all"
-          />
-        }
-        <p className="absolute top-4 right-4 bg-black/75 text-white text-xs px-2 py-1 rounded uppercase">
-          {props.data.status}
-        </p>
+    <Link
+      to={`/projects/${data.id}`}
+      className="project-card group block w-full"
+    >
+      <div className="relative overflow-hidden aspect-[3/4] mb-6">
+        <img
+          src={data.images[0]}
+          alt={data.title}
+          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+        />
+        <span className="absolute top-5 left-5 bg-white text-gray-900 text-[10px] font-medium tracking-[0.25em] uppercase px-3 py-1.5">
+          {data.status}
+        </span>
       </div>
-      <div className="text-container p-5">
-        <h1 className="font-medium text-lg">{props.data.title}</h1>
-        <p className="font-light text-gray-500 mb-5">{props.data.address}</p>
-        <div className="infoAndButton flex justify-between gap-1 items-center">
-          <div className="info flex gap-3 text-sm md:text-base">
-            <p className="flex justify-center items-center gap-1">
-              {props.data.bedrooms}
-              <FaBed />
-            </p>
-            <p className="flex justify-center items-center gap-1">
-              {props.data.bathrooms}
-              <FaShower />
-            </p>
-            <p className="flex justify-center items-center gap-1">
-              {props.data.parkings}
-              <FaCar />
-            </p>
-            <p className="flex justify-center items-center gap-1 whitespace-nowrap">
-              {props.data.sft} sft
-              <FaRuler />
-            </p>
-          </div>
-          <Link to={`/projects/${props.data.id}`} key={props.data.id}>
-            <button className="bg-black hover:bg-gray-800 text-white py-1 px-2 rounded">
-              Details
-            </button>
-          </Link>
-        </div>
-      </div>
-    </div>
+      <h1 className="text-2xl md:text-3xl uppercase tracking-wider text-gray-900 mb-2 font-normal">
+        {data.title}
+      </h1>
+      <p className="text-lg text-gray-500 font-light">{data.address}</p>
+    </Link>
   );
 }

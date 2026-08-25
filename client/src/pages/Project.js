@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import { FaBed, FaShower, FaCar, FaRuler } from "react-icons/fa";
+import { FaBed, FaShower, FaCar, FaRuler, FaMapMarkerAlt } from "react-icons/fa";
 import ImageSlider from "../components/ImageSlider";
+import Navbar from "../components/Navbar";
 import projects from "../data/db";
+
+const statusStyles = {
+  sold: "bg-red-500/90 text-white",
+  available: "bg-emerald-500/90 text-white",
+  upcoming: "bg-amber-500/90 text-white",
+  ongoing: "bg-blue-500/90 text-white",
+};
 
 export default function Project() {
   var { id } = useParams();
@@ -12,62 +20,86 @@ export default function Project() {
     window.scrollTo(0, 0);
   }, []);
 
+  const project = projects[id];
+  const statusKey = (project.status || "").toString().toLowerCase();
+  const statusClass = statusStyles[statusKey] || "bg-black/85 text-white";
+
+  const features = [
+    { icon: <FaBed />, value: project.bedrooms, label: "Bedrooms" },
+    { icon: <FaShower />, value: project.bathrooms, label: "Bathrooms" },
+    { icon: <FaCar />, value: project.parkings, label: "Parking" },
+    { icon: <FaRuler />, value: project.sft ? `${project.sft} sft` : "", label: "Area" },
+  ].filter((f) => f.value !== "" && f.value !== undefined && f.value !== null);
+
   return (
     <>
-      <div className="project flex flex-col lg:flex-row w-sceen">
-        <h1 className="px-5 md:px-20 lg:px-40 pt-32 lg:hidden text-3xl">
-          {projects[id].title}
-        </h1>
-        <p className="px-5 md:px-20 lg:px-40 mb-10 lg:hidden text-gray-600">
-          {projects[id].address}
-        </p>
-        <div className="project-info w-full lg:w-1/2 px-5 md:px-20 lg:px-32 py-12 lg:py-32 order-2 lg:order-1">
-          <h1 className="hidden lg:block mb-1 text-3xl">
-            {projects[id].title}
-          </h1>
-          <p className="hidden lg:block mb-5 text-gray-600">
-            {projects[id].address}
-          </p>
-          <ul className="flex flex-wrap gap-3 mb-10">
-            <li className="flex justify-center items-center gap-1">
-              <FaBed />
-              {projects[id].bedrooms} Bedrooms
-            </li>
-            <li className="flex justify-center items-center gap-1">
-              <FaShower />
-              {projects[id].bathrooms} Bathrooms
-            </li>
-            <li className="flex justify-center items-center gap-1">
-              <FaCar />
-              {projects[id].parkings} Parkings
-            </li>
-            <li className="flex justify-center items-center gap-1">
-              <FaRuler />
-              {projects[id].sft} sft Area
-            </li>
-          </ul>
-          <p className="mb-5">
-            Status:{" "}
-            <span className="capitalize text-green-600 font-bold">
-              {projects[id].status}
+      <Navbar />
+      <div className="project-page pt-32 pb-16 bg-white">
+        {/* HEADER */}
+        <div className="container-site">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+            <div className="flex-1">
+              <p className="flex items-center gap-2 text-sm text-gray-500 uppercase tracking-[0.2em] mb-4">
+                <FaMapMarkerAlt className="text-xs" />
+                {project.address}
+              </p>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-merriweather leading-tight text-gray-900">
+                {project.title}
+              </h1>
+            </div>
+            <span
+              className={`self-start text-[10px] font-semibold tracking-[0.25em] uppercase px-4 py-2 rounded-full ${statusClass}`}
+            >
+              {project.status}
             </span>
-          </p>
-          <p className="text-justify">{projects[id].description}</p>
+          </div>
+
+          {/* FEATURES */}
+          {features.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 border-y border-gray-200 divide-x divide-gray-200 mb-12">
+              {features.map((f, i) => (
+                <div key={i} className="flex flex-col items-center justify-center py-6 px-4">
+                  <span className="text-2xl text-gray-800 mb-2">{f.icon}</span>
+                  <span className="text-lg font-medium text-gray-900">{f.value}</span>
+                  <span className="text-xs tracking-[0.2em] uppercase text-gray-500 mt-1">
+                    {f.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="project-images lg:w-1/2 px-5 py-5 lg:px-20 lg:py-32 order-1 lg:order-2 h-full">
-          <ImageSlider images={projects[id].images} />
+
+        {/* GALLERY — full container width */}
+        <div className="container-site mb-16">
+          <ImageSlider images={project.images} />
+        </div>
+
+        {/* DESCRIPTION */}
+        <div className="container-site max-w-3xl">
+          <h2 className="text-2xl font-merriweather mb-4 text-gray-900">
+            About this project
+          </h2>
+          <p className="text-lg text-gray-700 font-light leading-relaxed">
+            {project.description}
+          </p>
         </div>
       </div>
-      <div className="flex justify-center items-start gap-8 px-5 md:px-20 lg:px-40">
-        <Link to={"/"}>
-          <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 my-12 rounded">
-            To Home
-          </button>
+
+      <div className="container-site flex justify-center items-center gap-10 my-12">
+        <Link
+          to={"/"}
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
+        >
+          <span aria-hidden="true">←</span>
+          To home
         </Link>
-        <Link to={"/projects"}>
-          <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 my-12 rounded">
-            To Projects
-          </button>
+        <Link
+          to={"/projects"}
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
+        >
+          To projects
+          <span aria-hidden="true">→</span>
         </Link>
       </div>
     </>
