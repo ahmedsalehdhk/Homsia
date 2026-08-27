@@ -2,12 +2,18 @@ import React, { useRef, useState } from "react";
 import emailjs from "@emailjs/browser";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
+const inputClass =
+  "w-full rounded bg-white/95 text-gray-900 placeholder:text-gray-500 py-4 px-4 focus:outline-none focus:ring-2 focus:ring-white/70 transition";
+const labelClass =
+  "block text-[11px] tracking-[0.25em] uppercase text-gray-200 mb-2";
+
 const Contact = () => {
   const form = useRef(null);
-  const [emailSent, setEmailSent] = useState(false);
+  const [status, setStatus] = useState("idle"); // idle | sending | sent | error
 
   const sendEmail = (e) => {
     e.preventDefault();
+    setStatus("sending");
 
     emailjs
       .sendForm(
@@ -17,42 +23,33 @@ const Contact = () => {
         "1Yrfs77G5h8g2dM_3"
       )
       .then(
-        (result) => {
-          setEmailSent(true);
+        () => {
+          setStatus("sent");
+          form.current && form.current.reset();
+          setTimeout(() => setStatus("idle"), 6000);
         },
         (error) => {
-          console.log(error.text);
+          console.log(error && error.text);
+          setStatus("error");
         }
       );
   };
-  window.addEventListener("DOMContentLoaded", () => {
-    const input1 = document.querySelector('input[name="first_name"]');
-    const input2 = document.querySelector('input[name="email"]');
 
-    input1.addEventListener("invalid", function (event) {
-      if (event.target.validity.valueMissing) {
-        event.target.setCustomValidity(
-          "Please tell us how we should address you."
-        );
-      }
-    });
-
-    input1.addEventListener("change", function (event) {
-      event.target.setCustomValidity("");
-    });
-
-    input2.addEventListener("invalid", function (event) {
-      if (event.target.validity.valueMissing) {
-        event.target.setCustomValidity(
-          "We need your email for us to send a reply."
-        );
-      }
-    });
-
-    input2.addEventListener("change", function (event) {
-      event.target.setCustomValidity("");
-    });
-  });
+  const handleFirstNameInvalid = (e) => {
+    if (e.target.validity.valueMissing) {
+      e.target.setCustomValidity(
+        "Please tell us how we should address you."
+      );
+    }
+  };
+  const handleEmailInvalid = (e) => {
+    if (e.target.validity.valueMissing) {
+      e.target.setCustomValidity(
+        "We need your email for us to send a reply."
+      );
+    }
+  };
+  const clearValidity = (e) => e.target.setCustomValidity("");
 
   return (
     <div
@@ -63,10 +60,10 @@ const Contact = () => {
       <div className="contact_overlay bg-black/50 w-full py-32">
        <div className="container-site flex flex-col lg:flex-row gap-12 lg:gap-16">
         <div className="contact_left lg:w-1/2 text-white">
-          <h1 className="text-4xl lg:text-5xl font-medium mb-4 font-merriweather">
+          <h1 className="text-4xl lg:text-5xl mb-4 font-display leading-tight">
             Get In Touch With Us
           </h1>
-          <p className="text-gray-200 text-lg mb-10 max-w-md">
+          <p className="text-gray-200 text-lg font-light mb-10 max-w-md">
             Have a question about a project, ownership share, or partnership?
             We'd love to hear from you.
           </p>
@@ -128,52 +125,86 @@ const Contact = () => {
           </div>
         </div>
         <div className="contact_right w-full lg:w-1/2 flex items-start justify-end">
-          <div className="contact_form bg-black/30 backdrop-blur-sm w-full px-5 md:px-12 py-12 rounded-xl">
-            {/* CONTACT FORM */}
+          <div className="contact_form bg-black/30 backdrop-blur-sm w-full px-5 md:px-10 py-10 md:py-12 rounded-xl">
             <form
               ref={form}
               onSubmit={sendEmail}
               className="contactform_internal"
+              noValidate={false}
             >
-              <h1 className="text-white text-xl">Name</h1>
-              <div className="w-full flex flex-col lg:flex-row gap-5 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                <div>
+                  <label htmlFor="first_name" className={labelClass}>
+                    First name
+                  </label>
+                  <input
+                    id="first_name"
+                    className={inputClass}
+                    type="text"
+                    placeholder="Jane"
+                    name="first_name"
+                    onInvalid={handleFirstNameInvalid}
+                    onChange={clearValidity}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="last_name" className={labelClass}>
+                    Last name
+                  </label>
+                  <input
+                    id="last_name"
+                    className={inputClass}
+                    type="text"
+                    placeholder="Doe"
+                    name="last_name"
+                  />
+                </div>
+              </div>
+              <div className="mb-6">
+                <label htmlFor="email" className={labelClass}>
+                  Email
+                </label>
                 <input
-                  className="p-3 w-full rounded"
-                  type="text"
-                  placeholder="First name"
-                  name="first_name"
+                  id="email"
+                  className={inputClass}
+                  type="email"
+                  placeholder="you@example.com"
+                  name="email"
+                  onInvalid={handleEmailInvalid}
+                  onChange={clearValidity}
                   required
                 />
-                <input
-                  className="p-3 w-full rounded"
-                  type="text"
-                  placeholder="Last name"
-                  name="last_name"
+              </div>
+              <div className="mb-8">
+                <label htmlFor="message" className={labelClass}>
+                  Your message
+                </label>
+                <textarea
+                  id="message"
+                  className={`${inputClass} resize-none min-h-[140px]`}
+                  name="message"
+                  placeholder="Share your thoughts"
+                  required
                 />
               </div>
-              <h1 className="text-white text-xl">E-mail</h1>
-              <input
-                className="p-3 w-full rounded mb-5"
-                type="email"
-                placeholder="john@gmail.com"
-                name="email"
-                required
-              />
-              <h1 className="text-white text-xl">Your Message</h1>
-              <textarea
-                className="w-full p-3 rounded resize-none mb-5"
-                name="message"
-                placeholder="Share your thoughts"
-                required
-              />
-              <div className="flex justify-start items-center gap-3">
-                <input
+              <div className="flex flex-wrap items-center gap-4">
+                <button
                   type="submit"
-                  value="Send"
-                  className="submit_button bg-black hover:bg-gray-800 text-white px-8 py-4 rounded"
-                />
-                {emailSent && (
-                  <p className="uppercase text-green-400 font-bold">sent!</p>
+                  disabled={status === "sending"}
+                  className="submit_button bg-white text-gray-900 hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed text-xs tracking-[0.25em] uppercase font-semibold px-8 py-4 rounded"
+                >
+                  {status === "sending" ? "Sending…" : "Send message"}
+                </button>
+                {status === "sent" && (
+                  <p className="text-[11px] tracking-[0.25em] uppercase text-emerald-300 font-semibold">
+                    Message sent
+                  </p>
+                )}
+                {status === "error" && (
+                  <p className="text-[11px] tracking-[0.25em] uppercase text-red-300 font-semibold">
+                    Couldn't send — please try again
+                  </p>
                 )}
               </div>
             </form>

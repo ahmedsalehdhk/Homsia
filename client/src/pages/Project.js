@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { FaBed, FaShower, FaCar, FaRuler, FaMapMarkerAlt } from "react-icons/fa";
 import ImageSlider from "../components/ImageSlider";
 import Navbar from "../components/Navbar";
@@ -43,7 +43,7 @@ export default function Project() {
                 <FaMapMarkerAlt className="text-xs" />
                 {project.address}
               </p>
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-merriweather leading-tight text-gray-900">
+              <h1 className="text-5xl md:text-6xl lg:text-7xl font-display leading-[1.05] text-gray-900">
                 {project.title}
               </h1>
             </div>
@@ -76,32 +76,51 @@ export default function Project() {
         </div>
 
         {/* DESCRIPTION */}
-        <div className="container-site max-w-3xl">
-          <h2 className="text-2xl font-merriweather mb-4 text-gray-900">
+        <div className="container-site max-w-3xl mb-20">
+          <h2 className="text-3xl md:text-4xl font-display mb-6 text-gray-900">
             About this project
           </h2>
           <p className="text-lg text-gray-700 font-light leading-relaxed">
             {project.description}
           </p>
         </div>
+
+        {/* PROJECT SPECIFICATIONS */}
+        {(() => {
+          const specs = [
+            { label: "Land size", value: project.landSize },
+            { label: "Number of floors", value: project.floors },
+            { label: "Apartment size", value: project.apartmentSize },
+            { label: "Number of apartments", value: project.totalApartments },
+            { label: "Number of parking", value: project.totalParking },
+            { label: "Facing", value: project.facing },
+            { label: "Front road width", value: project.roadWidth },
+          ].filter(
+            (s) => s.value !== "" && s.value !== undefined && s.value !== null
+          );
+          if (specs.length === 0) return null;
+          return (
+            <div className="container-site">
+              <h2 className="text-3xl md:text-4xl font-display mb-10 text-gray-900">
+                Project specifications
+              </h2>
+              <dl className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-8 border-t border-gray-200 pt-10">
+                {specs.map((s, i) => (
+                  <div key={i} className="flex flex-col gap-2">
+                    <dt className="text-[11px] tracking-[0.25em] uppercase text-gray-500">
+                      {s.label}
+                    </dt>
+                    <dd className="text-xl font-medium text-gray-900 font-merriweather">
+                      {s.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          );
+        })()}
       </div>
 
-      <div className="container-site flex justify-center items-center gap-10 my-12">
-        <Link
-          to={"/"}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
-        >
-          <span aria-hidden="true">←</span>
-          To home
-        </Link>
-        <Link
-          to={"/projects"}
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
-        >
-          To projects
-          <span aria-hidden="true">→</span>
-        </Link>
-      </div>
     </>
   );
 }

@@ -1,18 +1,13 @@
-import { Link } from "react-router-dom";
 import {
-  FaQuoteLeft,
   FaRegBuilding,
   FaMoneyCheckAlt,
   FaLightbulb,
+  FaQuoteLeft,
 } from "react-icons/fa";
-
-import projects from "../data/db";
-import HeroCarousel from "../components/HeroCarousel";
-import ProjectCard from "../components/ProjectCard";
-import Navbar from "../components/Navbar";
 import { useEffect } from "react";
+import Navbar from "../components/Navbar";
 
-const Home = () => {
+const About = () => {
   useEffect(() => {
     if (window.location.hash) {
       const el = document.getElementById(window.location.hash.slice(1));
@@ -27,16 +22,13 @@ const Home = () => {
   return (
     <>
       <Navbar />
-      <div className="home master-container overflow-x-hidden" id="home">
-        {/* HERO SECTION */}
-        <HeroCarousel />
-
-        {/* ABOUT TEASER */}
-        <div className="about py-32 bg-white" id="about">
+      <div className="about-page master-container overflow-x-hidden">
+        {/* ABOUT SECTION */}
+        <div className="about pt-40 pb-32 bg-white" id="about">
           <div className="container-site text-left">
-            <h2 className="text-4xl md:text-5xl mb-12 font-display leading-tight max-w-3xl text-gray-900">
+            <h1 className="text-5xl md:text-6xl mb-12 font-display leading-[1.05] max-w-3xl text-gray-900">
               Building Homeownership Together
-            </h2>
+            </h1>
             <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
               <div className="lg:w-1/2">
                 <p className="text-lg text-gray-800 font-semibold mb-6">
@@ -44,19 +36,35 @@ const Home = () => {
                   built on a simple promise: to make homeownership
                   accessible, clear, and affordable for everyone.
                 </p>
-                <p className="text-lg text-gray-700 font-light mb-8">
-                  Through our share-based ownership model, the cost of a
-                  property is divided into smaller, affordable shares—so
-                  everyday people can build real wealth through real estate,
-                  one share at a time.
+                <p className="text-lg text-gray-700 font-light mb-6">
+                  Homsia was started by a group of friends who saw a big
+                  problem in real estate: buying a property costs too much
+                  money upfront, so many people are locked out. We set out
+                  to change that with a simple dream—one where owning a
+                  home isn't reserved for the few.
                 </p>
-                <Link
-                  to={"/about"}
+                <p className="text-lg text-gray-700 font-light mb-6">
+                  To make this happen, we use a share-based ownership model.
+                  Instead of one person paying the full price for an entire
+                  property, the total cost is divided into smaller,
+                  affordable shares. You can buy as many shares as your
+                  budget allows, giving you real ownership and equity
+                  without taking on overwhelming debt.
+                </p>
+                <p className="text-lg text-gray-700 font-light mb-8">
+                  We handle every step of the process, from selecting raw
+                  land to delivering complete, well-planned projects. By
+                  combining expert property management with shared buying
+                  power, Homsia opens the door for everyday people to build
+                  real wealth through real estate—one share at a time.
+                </p>
+                <a
+                  href="#team"
                   className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
                 >
-                  Learn more about us
+                  Meet the team
                   <span aria-hidden="true">→</span>
-                </Link>
+                </a>
               </div>
               <div className="lg:w-1/2 w-full">
                 <img
@@ -66,44 +74,6 @@ const Home = () => {
                 />
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* FEATURED SECTION */}
-        <div className="featured py-32 bg-white" id="featured">
-          <div className="container-site flex flex-col justify-center items-center">
-            <h2 className="text-4xl md:text-5xl mb-5 font-display text-gray-900">
-              Our Featured Exclusives
-            </h2>
-            <p className="text-gray-700 font-light mb-12 max-w-2xl text-center">
-              Discover unparalleled real estate opportunities with our featured
-              exclusives—crafted to elevate your property search and provide
-              unique investment prospects.
-            </p>
-            <div className="featured-cards flex flex-wrap justify-center gap-8 mb-16 w-full">
-              {projects &&
-                projects.map((project, index) => {
-                  if (project.featured === "true" || project.featured === true) {
-                    return (
-                      <div
-                        key={index}
-                        className="w-full sm:w-[380px] lg:w-[420px]"
-                      >
-                        <ProjectCard data={project} />
-                      </div>
-                    );
-                  } else {
-                    return "";
-                  }
-                })}
-            </div>
-            <Link
-              to={"/projects"}
-              className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-black border-b border-gray-900 hover:border-black pb-0.5 transition-colors"
-            >
-              View all projects
-              <span aria-hidden="true">→</span>
-            </Link>
           </div>
         </div>
 
@@ -179,9 +149,53 @@ const Home = () => {
             </h2>
           </div>
         </div>
+
+        {/* TEAM SECTION */}
+        <div className="team py-32 bg-white" id="team">
+          <div className="container-site">
+            <h2 className="text-4xl md:text-5xl mb-16 font-display text-gray-900">
+              Meet the team
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Mohit Rahman Chowdhury",
+                  role: "Chairman",
+                  image: "/assets/team/Mohit Rahman Chowdhury.png",
+                },
+                {
+                  name: "Yaminul Haq",
+                  role: "Managing Director",
+                  image: "/assets/team/Yaminul Haq.jpg",
+                },
+                {
+                  name: "Md. Opu Saruar",
+                  role: "Director",
+                  image: "/assets/team/Opu Saroar.png",
+                },
+              ].map((m, i) => (
+                <div key={i} className="team-member">
+                  <div className="relative aspect-[4/5] bg-gray-200 overflow-hidden mb-6">
+                    <img
+                      src={m.image}
+                      alt={m.name}
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-2xl text-gray-900 mb-2 font-normal">
+                    {m.name}
+                  </h3>
+                  <p className="text-xs tracking-[0.25em] uppercase text-gray-500">
+                    {m.role}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
-export default Home;
+export default About;

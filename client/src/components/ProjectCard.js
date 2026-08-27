@@ -19,10 +19,12 @@ export default function ProjectCard(props) {
           {data.status}
         </span>
       </div>
-      <h1 className="text-2xl md:text-3xl uppercase tracking-wider text-gray-900 mb-2 font-normal">
+      <h3 className="text-2xl md:text-3xl text-gray-900 mb-2 font-normal font-display leading-tight">
         {data.title}
-      </h1>
-      <p className="text-lg text-gray-500 font-light">{data.address}</p>
+      </h3>
+      <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
+        {data.address}
+      </p>
     </Link>
   );
 }

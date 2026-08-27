@@ -1,64 +1,102 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, NavLink } from "react-router-dom";
 import "../App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const logo = "/assets/logo/Homsia.png";
 
+const navItems = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/projects", label: "Projects" },
+  { to: "/contact", label: "Contact" },
+];
+
 const Navbar = () => {
-    const [changeNavColor, setChangeNavColor] = useState(false);
-    const [changeHamburgerColor, setChangeHamburgerColor] = useState(false)
-    const [openMobileNav, setOpenMobileNav] = useState(false)
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+  const [scrolled, setScrolled] = useState(false);
+  const [openMobileNav, setOpenMobileNav] = useState(false);
 
-    // changing navbar and hamburger color on scroll
-    window.addEventListener('scroll', () => {
-        if(window.scrollY >= 60){
-            setChangeNavColor(true)
-            setChangeHamburgerColor(true)
-        } else{
-            setChangeNavColor(false)
-            setChangeHamburgerColor(false)
-        }
-    })
+  const solid = !isHome || scrolled;
+  const hamburgerDark = !isHome || scrolled || openMobileNav;
 
-    // opening mobile navbar and changing hamburger color on click
-    const hamburger = document.getElementById('hamburger');
-    hamburger && hamburger.addEventListener("click", () => {
-        setOpenMobileNav(!openMobileNav)
-        setChangeHamburgerColor(true)
-        if(openMobileNav && window.scrollY < 60){
-            setChangeHamburgerColor(false)
-        }
-    })
-        
-    return (
-        <nav className={changeNavColor ? "navbar colorChange": "navbar"} id="nav">
-            <div className="container-site flex justify-between items-center py-6">
-              <Link to="/"><img className="logo h-10 w-24 min-w-[96px]" src={logo} alt="homesia"/></Link>
-              <ul className="nav-links gap-5 hidden md:flex">
-                  <li className="capitalize font-medium" id="header"><a href="/#home">home</a></li>
-                  <li className="capitalize font-medium" id="header"><a href="/#about">about</a></li>
-                  <li className="capitalize font-medium" id="header"><a href="/#featured">featured</a></li>
-                  <li className="capitalize font-medium" id="header"><a href="/#services">services</a></li>
-                  <li className="capitalize font-medium" id="header"><a href="/#team">team</a></li>
-                  <li className="capitalize font-medium" id="header"><a href="/#contact">contact</a></li>
-              </ul>
-              <div className="hamburger cursor-pointer md:hidden z-50" id="hamburger">
-                  <div className={changeHamburgerColor ? "hamburger-dark" : "hamburger-light"} id="line2"></div>
-                  <div className={changeHamburgerColor ? "hamburger-dark" : "hamburger-light"} id="line2"></div>
-              </div>
-            </div>
-            <div className={openMobileNav ? "mobile-nav-open" : "mobile-nav"}>
-                <ul className="nav-links gap-10 flex flex-col md:hidden text-right" id="header">
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}} href="/#home">home</a></li>
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}} href="/#about">about</a></li>
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}}  href="/#featured">featured</a></li>
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}}  href="/#services">services</a></li>
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}}  href="/#team">team</a></li>
-                    <li className="capitalize font-medium"><a onClick={() => {setOpenMobileNav(false)}}  href="/#contact">contact</a></li>
-                </ul>
-            </div>
-        </nav>
-     );
-}
- 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY >= 60);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    setOpenMobileNav(false);
+  }, [location.pathname]);
+
+  return (
+    <nav className={solid ? "navbar colorChange" : "navbar"} id="nav">
+      <div className="container-site flex justify-between items-center py-6">
+        <Link to="/" aria-label="Homsia — Home">
+          <img
+            className="logo h-10 w-24 min-w-[96px]"
+            src={logo}
+            alt="Homsia"
+          />
+        </Link>
+        <ul className="nav-links gap-8 hidden md:flex">
+          {navItems.map((item) => (
+            <li
+              key={item.to}
+              className="text-sm font-medium uppercase tracking-[0.15em]"
+            >
+              <NavLink
+                to={item.to}
+                end={item.to === "/"}
+                className={({ isActive }) =>
+                  isActive ? "nav-link-active" : ""
+                }
+              >
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        <button
+          type="button"
+          aria-label="Toggle menu"
+          aria-expanded={openMobileNav}
+          className="hamburger cursor-pointer md:hidden z-50 bg-transparent border-0 p-0"
+          onClick={() => setOpenMobileNav((v) => !v)}
+        >
+          <div
+            className={hamburgerDark ? "hamburger-dark" : "hamburger-light"}
+          ></div>
+          <div
+            className={hamburgerDark ? "hamburger-dark" : "hamburger-light"}
+          ></div>
+        </button>
+      </div>
+      <div className={openMobileNav ? "mobile-nav-open" : "mobile-nav"}>
+        <ul className="nav-links gap-10 flex flex-col md:hidden text-right">
+          {navItems.map((item) => (
+            <li
+              key={item.to}
+              className="text-base font-medium uppercase tracking-[0.15em]"
+            >
+              <NavLink
+                to={item.to}
+                end={item.to === "/"}
+                onClick={() => setOpenMobileNav(false)}
+                className={({ isActive }) =>
+                  isActive ? "nav-link-active" : ""
+                }
+              >
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
 export default Navbar;

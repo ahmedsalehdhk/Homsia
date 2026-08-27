@@ -9,6 +9,13 @@ const projects = [
     bathrooms: "2",
     parkings: "1",
     sft: "1200",
+    landSize: "5 katha",
+    floors: "8",
+    apartmentSize: "1200 sft",
+    totalApartments: "14",
+    totalParking: "8",
+    facing: "South",
+    roadWidth: "25 ft",
     description:
       "Introducing our astounding real estate venture nestled amidst the serene outskirts of Dhaka, offering modern living spaces harmonizing urban comforts with natural tranquility.",
     status: "sold",
@@ -27,6 +34,13 @@ const projects = [
     bathrooms: "2",
     parkings: "1",
     sft: "1200",
+    landSize: "4.5 katha",
+    floors: "9",
+    apartmentSize: "1200 sft",
+    totalApartments: "16",
+    totalParking: "9",
+    facing: "East",
+    roadWidth: "20 ft",
     description:
       "Explore our latest real estate project, where modern comfort meets natural charm in every carefully designed home, offering a cozy retreat away from the city bustle.",
     status: "sold",
@@ -39,4 +53,3 @@ const projects = [
 ];
 
 export default projects;
-
