@@ -134,3 +134,6 @@ dist
 
 # Claude Code session
 .claude/
+
+homsia-migration.zip
+homsia-build.zip
