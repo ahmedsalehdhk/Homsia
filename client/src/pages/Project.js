@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { FaBed, FaShower, FaCar, FaRuler, FaMapMarkerAlt } from "react-icons/fa";
 import ImageSlider from "../components/ImageSlider";
@@ -15,10 +15,6 @@ const statusStyles = {
 export default function Project() {
   var { id } = useParams();
   id = id - 1;
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   const project = projects[id];
   const statusKey = (project.status || "").toString().toLowerCase();

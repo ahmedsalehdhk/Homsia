@@ -49,7 +49,34 @@ const projects = [
       "/assets/projects/piartower2.JPG",
       "/assets/projects/piartower3.JPG",
     ],
-  }
+  },
+  {
+    id: 3,
+    title: "Tranquil Park",
+    address: "Sector 13, Jolshiri",
+    featured: true,
+    bedrooms: "4",
+    bathrooms: "4",
+    parkings: "1",
+    sft: "2850",
+    landSize: "5 katha",
+    floors: "G+M+8",
+    apartmentSize: "2850 sft",
+    totalApartments: "8",
+    totalParking: "1",
+    facing: "",
+    roadWidth: "",
+    description:
+      "Set in the quiet enclave of Sector 13, Jolshiri, Tranquil Park pairs generous 2,850 sft residences with a considered ground-plus-mezzanine tower rising eight storeys. Eight families, one address — a calm, low-density community designed for space, light, and the ease of everyday living.",
+    status: "upcoming",
+    images: [
+      "/assets/projects/tranquil_park/tranquil-park-01.jpg",
+      "/assets/projects/tranquil_park/tranquil-park-02.jpg",
+      "/assets/projects/tranquil_park/tranquil-park-03.jpg",
+      "/assets/projects/tranquil_park/tranquil-park-04.jpg",
+      "/assets/projects/tranquil_park/tranquil-park-05.jpg",
+    ],
+  },
 ];
 
 export default projects;

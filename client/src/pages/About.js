@@ -9,14 +9,9 @@ import Navbar from "../components/Navbar";
 
 const About = () => {
   useEffect(() => {
-    if (window.location.hash) {
-      const el = document.getElementById(window.location.hash.slice(1));
-      if (el) {
-        el.scrollIntoView();
-        return;
-      }
-    }
-    window.scrollTo(0, 0);
+    if (!window.location.hash) return;
+    const el = document.getElementById(window.location.hash.slice(1));
+    if (el) el.scrollIntoView();
   }, []);
 
   return (

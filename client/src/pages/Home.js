@@ -14,14 +14,9 @@ import { useEffect } from "react";
 
 const Home = () => {
   useEffect(() => {
-    if (window.location.hash) {
-      const el = document.getElementById(window.location.hash.slice(1));
-      if (el) {
-        el.scrollIntoView();
-        return;
-      }
-    }
-    window.scrollTo(0, 0);
+    if (!window.location.hash) return;
+    const el = document.getElementById(window.location.hash.slice(1));
+    if (el) el.scrollIntoView();
   }, []);
 
   return (
@@ -80,22 +75,15 @@ const Home = () => {
               exclusives—crafted to elevate your property search and provide
               unique investment prospects.
             </p>
-            <div className="featured-cards flex flex-wrap justify-center gap-8 mb-16 w-full">
-              {projects &&
-                projects.map((project, index) => {
-                  if (project.featured === "true" || project.featured === true) {
-                    return (
-                      <div
-                        key={index}
-                        className="w-full sm:w-[380px] lg:w-[420px]"
-                      >
-                        <ProjectCard data={project} />
-                      </div>
-                    );
-                  } else {
-                    return "";
-                  }
-                })}
+            <div className="featured-cards grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16 w-full">
+              {projects
+                .filter((p) => p.featured === true || p.featured === "true")
+                .slice(0, 3)
+                .map((project) => (
+                  <div key={project.id} className="w-full">
+                    <ProjectCard data={project} />
+                  </div>
+                ))}
             </div>
             <Link
               to={"/projects"}

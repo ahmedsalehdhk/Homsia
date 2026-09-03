@@ -1,13 +1,8 @@
 import ProjectCard from "../components/ProjectCard";
 import projects from "../data/db";
-import { useEffect } from "react";
 import Navbar from "../components/Navbar";
 
 const Projects = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
     <Navbar />
@@ -22,9 +17,11 @@ const Projects = () => {
           </h1>
         </div>
         <div className="projects-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => {
-            return <ProjectCard data={project} key={index} />;
-          })}
+          {[...projects]
+            .sort((a, b) => b.id - a.id)
+            .map((project) => (
+              <ProjectCard data={project} key={project.id} />
+            ))}
         </div>
       </div>
     </div>
